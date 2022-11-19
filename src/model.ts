@@ -5,7 +5,8 @@ export interface APIResponse {
 // API Get Weather
 export interface City {
   weatherDecription: string;
-  temp: number
+  temp: number;
+  cityName: string;
 }
 
 
@@ -18,3 +19,4 @@ export interface GeographicalCoordinates {
   lat: number;
   lon: number;
 }
+

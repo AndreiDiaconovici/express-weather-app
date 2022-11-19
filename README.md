@@ -2,7 +2,7 @@
 
 Backend express application with 2 API
 - GET /v1/weather/city/popular
-- GET /v1/weather/city?name={name}
+- GET /v1/weather/cities?cities={cities string joined by ,} (Example: /v1/weather/cities?cities=Rome,Turin,Milan)
 
 Weather Third Party : Open Weather Map (https://openweathermap.org/api)
 
