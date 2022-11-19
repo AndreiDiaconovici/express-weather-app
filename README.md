@@ -18,10 +18,21 @@ In order to run correctly the application create .env file with following keys:
 ```
   PORT=8000
   OPENWEATHERMAP_API_KEY=[API_KEY]
+  YELP_API_KEY=[API_KEY]
 ```
 
 Start server: npm start
 Build server: npm run-script build
 Development environment: npm run-script dev
 
+# AWS Deployment
+```
+aws cloudformation package --template-file --s3-bucket <BucketName> template.yml --output-template-file template-generated.yml
+aws cloudformation deploy --template-file template-generated.yml --stack-name <StackName> --parameter-overrides KeyName=<KeyName>  --capabilities CAPABILITY_IAM
+```
+
+
+# TODO
+
+Unit & Integretion Tests
 

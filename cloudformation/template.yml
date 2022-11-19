@@ -1,0 +1,102 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS CloudFormation Template ElasticBeanstalk Express Application: Configure
+  and launch the AWS Elastic Beanstalk. **WARNING** This template
+  creates one or more Amazon EC2 instances. You will be billed for the AWS resources
+  used if you create a stack from this template.'
+Parameters:
+  KeyName:
+    Description: Name of an existing EC2 KeyPair to enable SSH access to the AWS Elastic
+      Beanstalk instance
+    Type: AWS::EC2::KeyPair::KeyName
+    ConstraintDescription: must be the name of an existing EC2 KeyPair.
+Mappings:
+  Region2Principal:
+    eu-west-1:
+      EC2Principal: ec2.amazonaws.com
+      OpsWorksPrincipal: opsworks.amazonaws.com
+Resources:
+  WebServerRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - Fn::FindInMap:
+                    - Region2Principal
+                    - Ref: AWS::Region
+                    - EC2Principal
+            Action:
+              - sts:AssumeRole
+      Path: "/"
+  WebServerRolePolicy:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyName: WebServerRole
+      PolicyDocument:
+        Statement:
+          - Effect: Allow
+            NotAction: iam:*
+            Resource: "*"
+      Roles:
+        - Ref: WebServerRole
+  WebServerInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Path: "/"
+      Roles:
+        - Ref: WebServerRole
+  ExpressApplication:
+    Type: AWS::ElasticBeanstalk::Application
+    Properties:
+      Description: AWS Elastic Beanstalk Express Node.js Application
+  ExpressApplicationVersion:
+    Type: AWS::ElasticBeanstalk::ApplicationVersion
+    Properties:
+      Description: Version 1.0
+      ApplicationName:
+        Ref: ExpressApplication
+      ExpressBundle:
+        S3Bucket:
+          Fn::Join:
+            - "-"
+            - - elasticbeanstalk-express
+              - Ref: AWS::Region
+        S3Key: nodejs-express.zip
+  ExpressConfigurationTemplate:
+    Type: AWS::ElasticBeanstalk::ConfigurationTemplate
+    Properties:
+      ApplicationName:
+        Ref: ExpressApplication
+      Expressption: SSH access to Node.JS Application
+      SolutionStackName: 64bit Amazon Linux 2 v5.1.0 running Node.js 12
+      OptionSettings:
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: EC2KeyName
+          Value:
+            Ref: KeyName
+        - Namespace: aws:autoscaling:launchconfiguration
+          OptionName: IamInstanceProfile
+          Value:
+            Ref: WebServerInstanceProfile
+  ExpressEnvironment:
+    Type: AWS::ElasticBeanstalk::Environment
+    Properties:
+      Description: AWS Elastic Beanstalk Environment running Express Node.js Application
+      ApplicationName:
+        Ref: ExpressApplication
+      ExpressteName:
+        Ref: ExpressConfigurationTemplate
+      VersionLabel:
+        Ref: ExpressApplicationVersion
+Expresss:
+  URL:
+    Description: URL of the AWS Elastic Beanstalk Environment
+    Value:
+      Fn::Join:
+        - ''
+        - - http://
+          - Fn::GetAtt:
+              - ExpressEnvironment
+              - EndpointURL
