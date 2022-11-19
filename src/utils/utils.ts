@@ -1,10 +1,10 @@
-import http from 'http';
+import https from 'https';
 
 
-export const processApi = async (options: string | http.RequestOptions): Promise<any> => {
+export const processApi = async (options: string | https.RequestOptions): Promise<any> => {
   return new Promise((resolve, reject) => {
     let data = '';
-    const request = http.request(options, (response) => {
+    const request = https.request(options, (response) => {
       // Set the encoding, so we don't get log to the console a bunch of gibberish binary data
       response.setEncoding('utf8');
   

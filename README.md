@@ -23,3 +23,5 @@ In order to run correctly the application create .env file with following keys:
 Start server: npm start
 Build server: npm run-script build
 Development environment: npm run-script dev
+
+
