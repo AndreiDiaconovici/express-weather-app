@@ -3,3 +3,4 @@ export const Constants = {
 }
 
 export const OPENWEATHER_HOSTNAME = 'api.openweathermap.org';
+export const YELP_HOSTNAME = 'api.yelp.com'

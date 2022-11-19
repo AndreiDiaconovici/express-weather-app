@@ -1,7 +1,8 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import { OpenWeatherService } from './service/open-weather';
+import { YelpService } from './service/yelp';
 import { Constants } from './constants/constants';
-import { processWeatherPopularCities } from './service/open-weather';
 
 dotenv.config();
 
@@ -18,18 +19,23 @@ app.listen(port, () => {
 
 app.get('/v1/weather/city/popular', async (_req: Request, res: Response) => {
   const cities = Constants.POPULAR_CITIES;
+  const yelpService = new YelpService();
+  const openWeatherService = new OpenWeatherService();
 
-  const result = await processWeatherPopularCities(cities);
-
-  res.json(result);
+  const weatherCities = await openWeatherService.processWeatherPopularCities(cities);
+  const weatherWithBusinessCities = await yelpService.retrieveBusinesses(weatherCities);
+  res.json(weatherWithBusinessCities);
 
 });
 
 app.get('/v1/weather/cities', async (req: Request, res: Response) => {
   const cities = req.query.cities?.toString().split(',') as string[];
 
-  const result = await processWeatherPopularCities(cities);
+  const yelpService = new YelpService();
+  const openWeatherService = new OpenWeatherService();
 
-  res.json(result);
+  const weatherCities = await openWeatherService.processWeatherPopularCities(cities);
+  const weatherWithBusinessCities = await yelpService.retrieveBusinesses(weatherCities);
+  res.json(weatherWithBusinessCities);
 
 });

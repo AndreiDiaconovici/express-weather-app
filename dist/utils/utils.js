@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.processApi = void 0;
-const http_1 = __importDefault(require("http"));
+const https_1 = __importDefault(require("https"));
 const processApi = (options) => __awaiter(void 0, void 0, void 0, function* () {
     return new Promise((resolve, reject) => {
         let data = '';
-        const request = http_1.default.request(options, (response) => {
+        const request = https_1.default.request(options, (response) => {
             // Set the encoding, so we don't get log to the console a bunch of gibberish binary data
             response.setEncoding('utf8');
             // As data starts streaming in, add each chunk to "data"

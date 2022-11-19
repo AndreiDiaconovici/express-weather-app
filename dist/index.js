@@ -14,8 +14,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const constants_1 = require("./constants");
 const open_weather_1 = require("./service/open-weather");
+const yelp_1 = require("./service/yelp");
+const constants_1 = require("./constants/constants");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;
@@ -27,12 +28,18 @@ app.listen(port, () => {
 });
 app.get('/v1/weather/city/popular', (_req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const cities = constants_1.Constants.POPULAR_CITIES;
-    const result = yield (0, open_weather_1.processWeatherPopularCities)(cities);
-    res.json(result);
+    const yelpService = new yelp_1.YelpService();
+    const openWeatherService = new open_weather_1.OpenWeatherService();
+    const weatherCities = yield openWeatherService.processWeatherPopularCities(cities);
+    const weatherWithBusinessCities = yield yelpService.retrieveBusinesses(weatherCities);
+    res.json(weatherWithBusinessCities);
 }));
 app.get('/v1/weather/cities', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const cities = (_a = req.query.cities) === null || _a === void 0 ? void 0 : _a.toString().split(',');
-    const result = yield (0, open_weather_1.processWeatherPopularCities)(cities);
-    res.json(result);
+    const yelpService = new yelp_1.YelpService();
+    const openWeatherService = new open_weather_1.OpenWeatherService();
+    const weatherCities = yield openWeatherService.processWeatherPopularCities(cities);
+    const weatherWithBusinessCities = yield yelpService.retrieveBusinesses(weatherCities);
+    res.json(weatherWithBusinessCities);
 }));
