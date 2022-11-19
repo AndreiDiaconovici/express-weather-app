@@ -1,6 +1,6 @@
-import { OPENWEATHER_HOSTNAME } from "./constants";
-import { APIResponse, City, GeographicalCoordinates } from "./model";
-import { processApi } from "./utils";
+import { OPENWEATHER_HOSTNAME } from "../constants/constants";
+import { APIResponse, City, GeographicalCoordinates } from "../model/model";
+import { processApi } from "../utils/utils";
 
 
 

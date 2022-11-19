@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const constants_1 = require("./constants");
-const open_weather_1 = require("./open-weather");
+const open_weather_1 = require("./service/open-weather");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const port = process.env.PORT;

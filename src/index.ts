@@ -1,7 +1,7 @@
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { Constants } from './constants';
-import { processWeatherPopularCities } from './open-weather';
+import { Constants } from './constants/constants';
+import { processWeatherPopularCities } from './service/open-weather';
 
 dotenv.config();
 
