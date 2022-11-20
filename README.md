@@ -1,5 +1,7 @@
 # express-weather-app
 
+Example: http://weath-expr-5oqpuascdpgo.eba-2q6kwmd3.eu-west-1.elasticbeanstalk.com/v1/weather/city/popular
+
 Backend express application with 2 API
 - GET /v1/weather/city/popular
 - GET /v1/weather/cities?cities={cities string joined by ,} (Example: /v1/weather/cities?cities=Rome,Turin,Milan)
@@ -12,7 +14,7 @@ Current weather data API:
 
 Cities businesses Third Party : Yelp Fusion (https://www.yelp.com/developers/documentation/v3/business_search)
 
-# Tutorial
+# How To Run
 
 In order to run correctly the application create .env file with following keys:
 ```
