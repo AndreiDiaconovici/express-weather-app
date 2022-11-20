@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "build": "npx tsc && cp -R node_modules dist/node_modules && cp package.json dist/package.json && cp .env dist/.env && cp -R cloudformation/.ebextensions dist/.ebextensions",
+    "build": "npx tsc && cp -R node_modules dist/node_modules && cp package.json dist/package.json",
     "start": "node index.js",
     "dev": "concurrently \"npx tsc --watch\" \"nodemon -q dist/index.js\""
   },

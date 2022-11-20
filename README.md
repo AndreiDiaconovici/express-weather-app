@@ -27,6 +27,12 @@ Development environment: npm run-script dev
 
 # AWS Deployment
 
+Build the application
+```
+npm run-script build
+´´´
+Create a zip of content inside dist folder
+
 You need to manually create:
 - the S3 bucket where the cloudformation template will be uploaded
 - the S3 bucket where the nodejs zip application will be uploaded
@@ -47,5 +53,4 @@ weather-app-express
 # TODO
 
 Unit & Integretion Tests
-Test Deployment
 
