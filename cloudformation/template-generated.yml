@@ -1,8 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: 'AWS CloudFormation Template ElasticBeanstalk Express Application: Configure
-  and launch the AWS Elastic Beanstalk. **WARNING** This template
-  creates one or more Amazon EC2 instances. You will be billed for the AWS resources
-  used if you create a stack from this template.'
+  and launch the AWS Elastic Beanstalk. **WARNING** This template creates one or more
+  Amazon EC2 instances. You will be billed for the AWS resources used if you create
+  a stack from this template.'
 Parameters:
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the AWS Elastic
@@ -20,33 +20,33 @@ Resources:
     Properties:
       AssumeRolePolicyDocument:
         Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - Fn::FindInMap:
-                    - Region2Principal
-                    - Ref: AWS::Region
-                    - EC2Principal
-            Action:
-              - sts:AssumeRole
-      Path: "/"
+        - Effect: Allow
+          Principal:
+            Service:
+            - Fn::FindInMap:
+              - Region2Principal
+              - Ref: AWS::Region
+              - EC2Principal
+          Action:
+          - sts:AssumeRole
+      Path: /
   WebServerRolePolicy:
     Type: AWS::IAM::Policy
     Properties:
       PolicyName: WebServerRole
       PolicyDocument:
         Statement:
-          - Effect: Allow
-            NotAction: iam:*
-            Resource: "*"
+        - Effect: Allow
+          NotAction: iam:*
+          Resource: '*'
       Roles:
-        - Ref: WebServerRole
+      - Ref: WebServerRole
   WebServerInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties:
-      Path: "/"
+      Path: /
       Roles:
-        - Ref: WebServerRole
+      - Ref: WebServerRole
   ExpressApplication:
     Type: AWS::ElasticBeanstalk::Application
     Properties:
@@ -68,14 +68,14 @@ Resources:
       Description: SSH access to Node.JS Application
       SolutionStackName: 64bit Amazon Linux 2 v5.6.1 running Node.js 14
       OptionSettings:
-        - Namespace: aws:autoscaling:launchconfiguration
-          OptionName: EC2KeyName
-          Value:
-            Ref: KeyName
-        - Namespace: aws:autoscaling:launchconfiguration
-          OptionName: IamInstanceProfile
-          Value:
-            Ref: WebServerInstanceProfile
+      - Namespace: aws:autoscaling:launchconfiguration
+        OptionName: EC2KeyName
+        Value:
+          Ref: KeyName
+      - Namespace: aws:autoscaling:launchconfiguration
+        OptionName: IamInstanceProfile
+        Value:
+          Ref: WebServerInstanceProfile
   ExpressEnvironment:
     Type: AWS::ElasticBeanstalk::Environment
     Properties:

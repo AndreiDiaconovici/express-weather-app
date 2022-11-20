@@ -26,13 +26,26 @@ Build server: npm run-script build
 Development environment: npm run-script dev
 
 # AWS Deployment
-```
-aws cloudformation package --template-file --s3-bucket <BucketName> template.yml --output-template-file template-generated.yml
-aws cloudformation deploy --template-file template-generated.yml --stack-name <StackName> --parameter-overrides KeyName=<KeyName>  --capabilities CAPABILITY_IAM
-```
 
+You need to manually create:
+- the S3 bucket where the cloudformation template will be uploaded
+- the S3 bucket where the nodejs zip application will be uploaded
+
+```
+aws cloudformation package --template-file cloudformation/template.yml --s3-bucket [S3_BUCKET] --output-template-file cloudformation/template-generated.yml
+
+Example:
+aws cloudformation package --template-file cloudformation/template.yml --s3-bucket weather-app-express --output-template-file cloudformation/template-generated.yml
+
+aws cloudformation deploy --template-file cloudformation/template-generated.yml --stack-name [StackName] --parameter-overrides KeyName=[KeyName] --capabilities CAPABILITY_IAM
+
+Example:
+aws cloudformation deploy --template-file cloudformation/template-generated.yml --stack-name weather-express --parameter-overrides KeyName=weather --capabilities CAPABILITY_IAM
+```
+weather-app-express
 
 # TODO
 
 Unit & Integretion Tests
+Test Deployment
 
