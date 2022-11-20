@@ -34,7 +34,7 @@ app.get('/v1/weather/city/popular', (_req, res) => __awaiter(void 0, void 0, voi
     const businesses = yield yelpService.retrieveBusinesses(weatherCities.cityCoords);
     const citiesResult = [];
     for (const city of weatherCities.cities) {
-        citiesResult.push(Object.assign(Object.assign({}, city), { business: businesses.at(weatherCities.cities.indexOf(city)) }));
+        citiesResult.push(Object.assign(Object.assign({}, city), { business: businesses[weatherCities.cities.indexOf(city)] }));
     }
     res.json(citiesResult);
 }));
@@ -47,7 +47,7 @@ app.get('/v1/weather/cities', (req, res) => __awaiter(void 0, void 0, void 0, fu
     const businesses = yield yelpService.retrieveBusinesses(weatherCities.cityCoords);
     const citiesResult = [];
     for (const city of weatherCities.cities) {
-        citiesResult.push(Object.assign(Object.assign({}, city), { business: businesses.at(weatherCities.cities.indexOf(city)) }));
+        citiesResult.push(Object.assign(Object.assign({}, city), { business: businesses[weatherCities.cities.indexOf(city)] }));
     }
     res.json(citiesResult);
 }));

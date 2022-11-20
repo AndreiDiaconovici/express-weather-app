@@ -29,7 +29,7 @@ app.get('/v1/weather/city/popular', async (_req: Request, res: Response) => {
   const citiesResult: City[] = []
 
   for (const city of weatherCities.cities) {
-    citiesResult.push({...city, business: businesses.at(weatherCities.cities.indexOf(city)) as Business[] })
+    citiesResult.push({...city, business: businesses[weatherCities.cities.indexOf(city)] as Business[] })
   }
 
   res.json(citiesResult);
@@ -48,7 +48,7 @@ app.get('/v1/weather/cities', async (req: Request, res: Response) => {
   const citiesResult: City[] = []
 
   for (const city of weatherCities.cities) {
-    citiesResult.push({...city, business: businesses.at(weatherCities.cities.indexOf(city)) as Business[] })
+    citiesResult.push({...city, business: businesses[weatherCities.cities.indexOf(city)] as Business[] })
   }
 
   res.json(citiesResult);
