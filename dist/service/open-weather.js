@@ -24,16 +24,17 @@ class OpenWeatherService {
             const latLonOfCities = yield Promise.all(arrPromisesLatLon);
             const arrPromisesWeather = [];
             for (const coords of latLonOfCities) {
-                arrPromisesWeather.push(this.getWeather(constants_1.OPENWEATHER_HOSTNAME, `/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${API_KEY}`, 'GET', coords.lat, coords.lon));
+                arrPromisesWeather.push(this.getWeather(constants_1.OPENWEATHER_HOSTNAME, `/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${API_KEY}`, 'GET'));
             }
             const result = yield Promise.all(arrPromisesWeather);
             console.debug('OpenWeatherService | processWeatherPopularCities | ' + JSON.stringify(result));
             return {
-                cities: result
+                cities: result,
+                cityCoords: latLonOfCities
             };
         });
     }
-    getWeather(hostname, path, method, lat, lon) {
+    getWeather(hostname, path, method) {
         return __awaiter(this, void 0, void 0, function* () {
             const options = {
                 hostname: hostname,
@@ -49,8 +50,6 @@ class OpenWeatherService {
                 weatherDecription: parsedResult.weather[0].description,
                 temp: parsedResult.main.temp,
                 cityName: parsedResult.name,
-                lat: lat,
-                lon: lon,
                 business: []
             };
             return response;
