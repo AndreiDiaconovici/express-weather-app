@@ -13,20 +13,18 @@ exports.YelpService = void 0;
 const constants_1 = require("../constants/constants");
 const utils_1 = require("../utils/utils");
 class YelpService {
-    retrieveBusinesses(input) {
+    retrieveBusinesses(citiesCoords) {
         return __awaiter(this, void 0, void 0, function* () {
             const arrBusinesses = [];
-            for (const city of input.cities) {
-                arrBusinesses.push(this.getBusiness(constants_1.YELP_HOSTNAME, `/v3/businesses/search?latitude=${city.lat}&longitude=${city.lon}`, 'GET', city));
+            for (const city of citiesCoords) {
+                arrBusinesses.push(this.getBusiness(constants_1.YELP_HOSTNAME, `/v3/businesses/search?latitude=${city.lat}&longitude=${city.lon}`, 'GET'));
             }
-            const cities = yield Promise.all(arrBusinesses);
-            console.debug('YelpService | retrieveBusinesses | ' + JSON.stringify(cities));
-            return {
-                cities: cities
-            };
+            const businesses = yield Promise.all(arrBusinesses);
+            console.debug('YelpService | retrieveBusinesses | ' + JSON.stringify(businesses));
+            return businesses;
         });
     }
-    getBusiness(hostname, path, method, city) {
+    getBusiness(hostname, path, method) {
         var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const API_KEY = (_a = process.env.YELP_API_KEY) !== null && _a !== void 0 ? _a : 'NOT_DEFINED';
@@ -41,7 +39,7 @@ class YelpService {
             };
             const result = yield (0, utils_1.processApi)(options);
             const parsedResult = JSON.parse(result);
-            return Object.assign(Object.assign({}, city), { business: parsedResult.businesses });
+            return parsedResult.businesses;
         });
     }
 }

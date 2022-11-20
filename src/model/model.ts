@@ -8,8 +8,6 @@ export interface City {
   temp: number;
   cityName: string;
   business: Business[];
-  lat: number;
-  lon: number;
 }
 
 export interface Business {
@@ -44,7 +42,7 @@ export interface Business {
 
 // API Get Lat Lon
 export interface GeocodingResponse {
-  body: GeographicalCoordinates[]
+  coords: GeographicalCoordinates[]
 }
 
 export interface GeographicalCoordinates {

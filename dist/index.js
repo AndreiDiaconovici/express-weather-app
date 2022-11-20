@@ -31,8 +31,12 @@ app.get('/v1/weather/city/popular', (_req, res) => __awaiter(void 0, void 0, voi
     const yelpService = new yelp_1.YelpService();
     const openWeatherService = new open_weather_1.OpenWeatherService();
     const weatherCities = yield openWeatherService.processWeatherPopularCities(cities);
-    const weatherWithBusinessCities = yield yelpService.retrieveBusinesses(weatherCities);
-    res.json(weatherWithBusinessCities);
+    const businesses = yield yelpService.retrieveBusinesses(weatherCities.cityCoords);
+    const citiesResult = [];
+    for (const city of weatherCities.cities) {
+        citiesResult.push(Object.assign(Object.assign({}, city), { business: businesses.at(weatherCities.cities.indexOf(city)) }));
+    }
+    res.json(citiesResult);
 }));
 app.get('/v1/weather/cities', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -40,6 +44,10 @@ app.get('/v1/weather/cities', (req, res) => __awaiter(void 0, void 0, void 0, fu
     const yelpService = new yelp_1.YelpService();
     const openWeatherService = new open_weather_1.OpenWeatherService();
     const weatherCities = yield openWeatherService.processWeatherPopularCities(cities);
-    const weatherWithBusinessCities = yield yelpService.retrieveBusinesses(weatherCities);
-    res.json(weatherWithBusinessCities);
+    const businesses = yield yelpService.retrieveBusinesses(weatherCities.cityCoords);
+    const citiesResult = [];
+    for (const city of weatherCities.cities) {
+        citiesResult.push(Object.assign(Object.assign({}, city), { business: businesses.at(weatherCities.cities.indexOf(city)) }));
+    }
+    res.json(citiesResult);
 }));

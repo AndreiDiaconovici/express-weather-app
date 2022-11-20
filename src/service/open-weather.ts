@@ -1,9 +1,9 @@
 import { OPENWEATHER_HOSTNAME } from "../constants/constants";
-import { APIResponse, City, GeographicalCoordinates } from "../model/model";
+import { City, GeographicalCoordinates } from "../model/model";
 import { processApi } from "../utils/utils";
 
 export class OpenWeatherService {
-  public async processWeatherPopularCities(cities: string[]): Promise<APIResponse> {
+  public async processWeatherPopularCities(cities: string[]): Promise<{cities: City[], cityCoords: GeographicalCoordinates[]}> {
     const API_KEY = process.env.OPENWEATHERMAP_API_KEY ?? 'NOT_DEFINED';
     const arrPromisesLatLon: Promise<GeographicalCoordinates>[] = [];
     for (const city of cities) {
@@ -21,9 +21,7 @@ export class OpenWeatherService {
       arrPromisesWeather.push(this.getWeather(
         OPENWEATHER_HOSTNAME,
         `/data/2.5/weather?lat=${coords.lat}&lon=${coords.lon}&appid=${API_KEY}`,
-        'GET',
-        coords.lat,
-        coords.lon
+        'GET'
       ))
     }
   
@@ -33,11 +31,12 @@ export class OpenWeatherService {
 
   
     return {
-      cities: result
+      cities: result,
+      cityCoords: latLonOfCities
     };
   }
 
-  private async getWeather(hostname: string, path: string, method: string, lat: number,lon: number): Promise<City> {
+  private async getWeather(hostname: string, path: string, method: string): Promise<City> {
     const options = {
       hostname: hostname,
       path: path,
@@ -54,8 +53,6 @@ export class OpenWeatherService {
       weatherDecription: parsedResult.weather[0].description,
       temp: parsedResult.main.temp,
       cityName: parsedResult.name,
-      lat: lat,
-      lon: lon,
       business: []
     }
   
